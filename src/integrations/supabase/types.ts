@@ -161,6 +161,63 @@ export type Database = {
         }
         Relationships: []
       }
+      health_tips: {
+        Row: {
+          category: string
+          content: string
+          created_at: string | null
+          id: string
+          title: string
+        }
+        Insert: {
+          category: string
+          content: string
+          created_at?: string | null
+          id?: string
+          title: string
+        }
+        Update: {
+          category?: string
+          content?: string
+          created_at?: string | null
+          id?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      meals: {
+        Row: {
+          calories: number | null
+          created_at: string | null
+          description: string
+          id: string
+          meal_type: Database["public"]["Enums"]["meal_type"]
+          recorded_at: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          calories?: number | null
+          created_at?: string | null
+          description: string
+          id?: string
+          meal_type: Database["public"]["Enums"]["meal_type"]
+          recorded_at?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          calories?: number | null
+          created_at?: string | null
+          description?: string
+          id?: string
+          meal_type?: Database["public"]["Enums"]["meal_type"]
+          recorded_at?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       shared_lists: {
         Row: {
           created_at: string | null
@@ -315,6 +372,39 @@ export type Database = {
         }
         Relationships: []
       }
+      symptoms: {
+        Row: {
+          created_at: string | null
+          id: string
+          notes: string | null
+          recorded_at: string | null
+          severity: Database["public"]["Enums"]["symptom_severity"]
+          symptom_name: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          recorded_at?: string | null
+          severity: Database["public"]["Enums"]["symptom_severity"]
+          symptom_name: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          recorded_at?: string | null
+          severity?: Database["public"]["Enums"]["symptom_severity"]
+          symptom_name?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       users: {
         Row: {
           avatar_url: string | null
@@ -365,7 +455,8 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      meal_type: "breakfast" | "lunch" | "dinner" | "snack"
+      symptom_severity: "mild" | "moderate" | "severe"
     }
     CompositeTypes: {
       [_ in never]: never
