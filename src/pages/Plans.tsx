@@ -5,14 +5,41 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import { useAuthStore } from "@/store/authStore";
+import { createSubscription } from "@/utils/subscriptionUtils";
+import { useToast } from "@/components/ui/use-toast";
 
 const Plans = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = useState<'free' | 'premium'>('free');
+  const [loading, setLoading] = useState(false);
+  const { user } = useAuthStore();
+  const { toast } = useToast();
 
-  const handleContinue = () => {
-    navigate('/profile-setup');
+  const handleContinue = async () => {
+    if (!user) {
+      toast({
+        title: "Error",
+        description: "Please log in first",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await createSubscription(user.id, selectedPlan);
+      navigate('/profile-setup');
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -96,8 +123,9 @@ const Plans = () => {
           <Button 
             size="lg"
             onClick={handleContinue}
+            disabled={loading}
           >
-            {t('continue')}
+            {loading ? t('loading') : t('continue')}
           </Button>
         </div>
       </motion.div>
