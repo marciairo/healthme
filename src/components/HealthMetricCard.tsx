@@ -6,6 +6,7 @@ import { Input } from "./ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "./ui/use-toast";
 import { useQuery } from "@tanstack/react-query";
+import { useAuthStore } from "@/store/authStore";
 
 interface HealthMetricCardProps {
   title: string;
@@ -17,6 +18,7 @@ const HealthMetricCard = ({ title, metricType, unit }: HealthMetricCardProps) =>
   const [isEditing, setIsEditing] = useState(false);
   const [newValue, setNewValue] = useState("");
   const { toast } = useToast();
+  const user = useAuthStore((state) => state.user);
 
   const { data: metricData, refetch } = useQuery({
     queryKey: ["healthMetric", metricType],
@@ -27,7 +29,7 @@ const HealthMetricCard = ({ title, metricType, unit }: HealthMetricCardProps) =>
         .eq("metric_type", metricType)
         .order("recorded_at", { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle(); // Changed from single() to maybeSingle()
 
       if (error) {
         console.error("Error fetching metric:", error);
@@ -40,10 +42,20 @@ const HealthMetricCard = ({ title, metricType, unit }: HealthMetricCardProps) =>
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!user?.id) {
+      toast({
+        title: "Error",
+        description: "You must be logged in to save metrics",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const { error } = await supabase.from("health_metrics").insert({
       metric_type: metricType,
       value: Number(newValue),
       unit,
+      user_id: user.id, // Added user_id field
     });
 
     if (error) {
