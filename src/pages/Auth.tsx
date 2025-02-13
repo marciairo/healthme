@@ -33,7 +33,11 @@ const Auth = () => {
         if (error) throw error;
 
         if (user) {
-          setUser(user);
+          setUser({
+            id: user.id,
+            email: user.email || email,
+            name: user.user_metadata?.name,
+          });
           navigate('/dashboard');
         }
       } else {
