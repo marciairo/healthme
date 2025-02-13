@@ -128,6 +128,39 @@ export type Database = {
         }
         Relationships: []
       }
+      health_metrics: {
+        Row: {
+          created_at: string | null
+          id: string
+          metric_type: string
+          recorded_at: string | null
+          unit: string | null
+          updated_at: string | null
+          user_id: string
+          value: number
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          metric_type: string
+          recorded_at?: string | null
+          unit?: string | null
+          updated_at?: string | null
+          user_id: string
+          value: number
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          metric_type?: string
+          recorded_at?: string | null
+          unit?: string | null
+          updated_at?: string | null
+          user_id?: string
+          value?: number
+        }
+        Relationships: []
+      }
       shared_lists: {
         Row: {
           created_at: string | null

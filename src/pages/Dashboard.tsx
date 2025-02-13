@@ -2,6 +2,7 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { useAuthStore } from "@/store/authStore";
+import HealthMetricCard from "@/components/HealthMetricCard";
 
 const Dashboard = () => {
   const { t } = useTranslation();
@@ -20,19 +21,21 @@ const Dashboard = () => {
       </header>
       <div className="health-track-container">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Placeholder cards for health metrics */}
-          <div className="card p-6">
-            <h3 className="heading-3 mb-4">Steps</h3>
-            <p className="text-3xl font-bold text-primary">0</p>
-          </div>
-          <div className="card p-6">
-            <h3 className="heading-3 mb-4">Heart Rate</h3>
-            <p className="text-3xl font-bold text-primary">--</p>
-          </div>
-          <div className="card p-6">
-            <h3 className="heading-3 mb-4">Sleep</h3>
-            <p className="text-3xl font-bold text-primary">--</p>
-          </div>
+          <HealthMetricCard 
+            title="Steps"
+            metricType="steps"
+            unit=" steps"
+          />
+          <HealthMetricCard 
+            title="Heart Rate"
+            metricType="heart_rate"
+            unit=" bpm"
+          />
+          <HealthMetricCard 
+            title="Sleep"
+            metricType="sleep"
+            unit="h"
+          />
         </div>
       </div>
     </motion.div>
