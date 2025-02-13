@@ -1,4 +1,3 @@
-
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { useAuthStore } from "@/store/authStore";
@@ -10,11 +9,23 @@ import HealthMetricCard from "@/components/HealthMetricCard";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
   const { t } = useTranslation();
   const user = useAuthStore((state) => state.user);
   const [activeTab, setActiveTab] = useState("daily");
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleAddRecord = () => {
+    toast({
+      title: "Coming Soon",
+      description: "The ability to add new records will be available soon!",
+      duration: 3000,
+    });
+  };
 
   // Fetch latest symptoms
   const { data: symptoms } = useQuery({
@@ -80,7 +91,6 @@ const Dashboard = () => {
           </TabsList>
 
           <TabsContent value="daily" className="space-y-6">
-            {/* Health Metrics */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <HealthMetricCard 
                 title="Steps"
@@ -99,7 +109,6 @@ const Dashboard = () => {
               />
             </div>
 
-            {/* Latest Symptoms */}
             <Card className="p-6">
               <div className="flex items-center gap-2 mb-4">
                 <Activity className="h-5 w-5 text-primary" />
@@ -117,7 +126,6 @@ const Dashboard = () => {
               </div>
             </Card>
 
-            {/* Latest Meals */}
             <Card className="p-6">
               <div className="flex items-center gap-2 mb-4">
                 <Utensils className="h-5 w-5 text-primary" />
@@ -135,7 +143,6 @@ const Dashboard = () => {
               </div>
             </Card>
 
-            {/* Health Tips */}
             <Card className="p-6">
               <div className="flex items-center gap-2 mb-4">
                 <LightbulbIcon className="h-5 w-5 text-primary" />
@@ -153,7 +160,6 @@ const Dashboard = () => {
           </TabsContent>
 
           <TabsContent value="reports" className="space-y-6">
-            {/* Basic Reports Section */}
             <Card className="p-6">
               <h2 className="heading-3 mb-4">Basic Reports</h2>
               <p className="text-muted-foreground">
@@ -164,10 +170,10 @@ const Dashboard = () => {
         </Tabs>
       </div>
 
-      {/* Add Record Button */}
       <Button
         size="lg"
         className="fixed bottom-6 right-6 rounded-full w-14 h-14 p-0 shadow-lg"
+        onClick={handleAddRecord}
       >
         <Plus className="h-6 w-6" />
       </Button>
