@@ -1,254 +1,195 @@
 
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
-import { Check, Star, Zap, Shield } from "lucide-react";
-import { useAuthStore } from "@/store/authStore";
-import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
+import { Check, Star, Crown, Zap, ArrowLeft } from "lucide-react";
 
 const Plans = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
-  const [selectedPlan, setSelectedPlan] = useState<'free' | 'premium'>('free');
-  const [loading, setLoading] = useState(false);
-  const { user } = useAuthStore();
-  const { toast } = useToast();
 
-  const handleContinue = async () => {
-    if (!user) {
-      toast({
-        title: "Error",
-        description: "Please log in first",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setLoading(true);
-    try {
-      navigate('/profile-setup');
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const planFeatures = {
-    free: [
-      { text: "Basic health tracking", included: true },
-      { text: "Simple analytics", included: true },
-      { text: "Data export", included: true },
-      { text: "AI health insights", included: false },
-      { text: "Advanced analytics", included: false },
-      { text: "Premium support", included: false },
-    ],
-    premium: [
-      { text: "Advanced health tracking", included: true },
-      { text: "AI-powered insights", included: true },
-      { text: "Predictive analytics", included: true },
-      { text: "Personalized recommendations", included: true },
-      { text: "Priority support", included: true },
-      { text: "Family sharing", included: true },
-    ]
-  };
+  const plans = [
+    {
+      name: "Starter",
+      price: "Free",
+      period: "",
+      description: "Perfect for getting started with health tracking",
+      icon: Zap,
+      color: "from-blue-500 to-blue-600",
+      features: [
+        "Basic health tracking",
+        "Daily mood logging",
+        "Sleep monitoring",
+        "7-day history",
+        "Basic insights",
+      ],
+      recommended: false,
+    },
+    {
+      name: "Pro",
+      price: "$9.99",
+      period: "/month",
+      description: "Advanced features for serious health enthusiasts",
+      icon: Star,
+      color: "from-teal-500 to-mint-500",
+      features: [
+        "All Starter features",
+        "AI-powered insights",
+        "Custom goals & challenges",
+        "Unlimited history",
+        "Advanced analytics",
+        "Export data",
+        "Priority support",
+      ],
+      recommended: true,
+    },
+    {
+      name: "Premium",
+      price: "$19.99",
+      period: "/month",
+      description: "The ultimate health optimization experience",
+      icon: Crown,
+      color: "from-purple-500 to-pink-500",
+      features: [
+        "All Pro features",
+        "Personal health coach AI",
+        "Medical report analysis",
+        "Nutrition recommendations",
+        "Fitness plan generation",
+        "Health risk predictions",
+        "24/7 health monitoring",
+        "White-glove support",
+      ],
+      recommended: false,
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-6">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-5xl"
-      >
-        <div className="text-center mb-12">
-          <motion.h1 
-            className="text-4xl font-bold text-gray-900 mb-4"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-teal-50 relative overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-teal-200/30 to-blue-200/30 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-mint-200/30 to-green-200/30 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative z-10 py-12 px-4">
+        <div className="max-w-7xl mx-auto">
+          {/* Back button */}
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
+            className="mb-8 text-gray-600 hover:text-gray-900"
           >
-            Choose Your Health Journey
-          </motion.h1>
-          <motion.p 
-            className="text-xl text-gray-600 max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            Unlock the power of personalized health tracking with AI-driven insights
-          </motion.p>
-        </div>
-        
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* Free Plan */}
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </Button>
+
+          {/* Header */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-16"
           >
-            <GlassCard
-              className={`p-8 cursor-pointer transition-all duration-300 ${
-                selectedPlan === 'free' 
-                  ? 'ring-2 ring-primary-500 shadow-xl shadow-primary/20' 
-                  : 'hover:shadow-lg'
-              }`}
-              onClick={() => setSelectedPlan('free')}
-              hover={false}
-            >
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full mb-4">
-                  <Shield className="h-8 w-8 text-white" />
-                </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Free Plan</h2>
-                <div className="flex items-baseline justify-center">
-                  <span className="text-4xl font-bold text-gray-900">$0</span>
-                  <span className="text-gray-600 ml-2">forever</span>
-                </div>
-              </div>
-
-              <ul className="space-y-4 mb-8">
-                {planFeatures.free.map((feature, index) => (
-                  <motion.li 
-                    key={index}
-                    className="flex items-center"
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.4 + index * 0.1 }}
-                  >
-                    <div className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mr-3 ${
-                      feature.included ? 'bg-green-100' : 'bg-gray-100'
-                    }`}>
-                      {feature.included ? (
-                        <Check className="w-3 h-3 text-green-600" />
-                      ) : (
-                        <div className="w-2 h-2 bg-gray-400 rounded-full" />
-                      )}
-                    </div>
-                    <span className={feature.included ? 'text-gray-900' : 'text-gray-400'}>
-                      {feature.text}
-                    </span>
-                  </motion.li>
-                ))}
-              </ul>
-
-              {selectedPlan === 'free' && (
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="absolute top-4 right-4 w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center"
-                >
-                  <Check className="w-4 h-4 text-white" />
-                </motion.div>
-              )}
-            </GlassCard>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Choose Your Health Journey
+            </h1>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Select the perfect plan to unlock your health potential with AI-powered insights and personalized recommendations.
+            </p>
           </motion.div>
 
-          {/* Premium Plan */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <div className="relative">
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-4 py-1 rounded-full text-sm font-medium flex items-center">
-                  <Star className="w-4 h-4 mr-1" />
-                  Most Popular
-                </div>
-              </div>
-              
-              <GlassCard
-                className={`p-8 cursor-pointer transition-all duration-300 ${
-                  selectedPlan === 'premium' 
-                    ? 'ring-2 ring-primary-500 shadow-xl shadow-primary/20' 
-                    : 'hover:shadow-lg'
-                }`}
-                onClick={() => setSelectedPlan('premium')}
-                hover={false}
-                glow
-              >
-                <div className="text-center mb-6">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full mb-4">
-                    <Zap className="h-8 w-8 text-white" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Premium Plan</h2>
-                  <div className="flex items-baseline justify-center">
-                    <span className="text-4xl font-bold text-gray-900">$9.99</span>
-                    <span className="text-gray-600 ml-2">/month</span>
-                  </div>
-                  <p className="text-sm text-primary-600 mt-2">First month free!</p>
-                </div>
+          {/* Plans Grid */}
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {plans.map((plan, index) => {
+              const IconComponent = plan.icon;
+              return (
+                <motion.div
+                  key={plan.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className={`relative ${plan.recommended ? 'md:-mt-4' : ''}`}
+                >
+                  {plan.recommended && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                      <Badge className="bg-gradient-to-r from-teal-500 to-mint-500 text-white px-4 py-1 text-sm font-medium">
+                        Most Popular
+                      </Badge>
+                    </div>
+                  )}
 
-                <ul className="space-y-4 mb-8">
-                  {planFeatures.premium.map((feature, index) => (
-                    <motion.li 
-                      key={index}
-                      className="flex items-center"
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.5 + index * 0.1 }}
-                    >
-                      <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center mr-3">
-                        <Check className="w-3 h-3 text-green-600" />
-                      </div>
-                      <span className="text-gray-900">{feature.text}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-
-                {selectedPlan === 'premium' && (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute top-4 right-4 w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center"
+                  <GlassCard
+                    className={`p-8 h-full ${
+                      plan.recommended
+                        ? 'ring-2 ring-teal-500/50 shadow-xl'
+                        : ''
+                    }`}
+                    variant={plan.recommended ? "strong" : "medium"}
+                    glow={plan.recommended}
                   >
-                    <Check className="w-4 h-4 text-white" />
-                  </motion.div>
-                )}
-              </GlassCard>
+                    {/* Plan Header */}
+                    <div className="text-center mb-8">
+                      <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r ${plan.color} mb-4 text-white shadow-lg`}>
+                        <IconComponent className="h-8 w-8" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                        {plan.name}
+                      </h3>
+                      <p className="text-gray-600 mb-4">{plan.description}</p>
+                      <div className="flex items-baseline justify-center">
+                        <span className="text-4xl font-bold text-gray-900">
+                          {plan.price}
+                        </span>
+                        <span className="text-gray-600 ml-1">{plan.period}</span>
+                      </div>
+                    </div>
+
+                    {/* Features */}
+                    <ul className="space-y-4 mb-8">
+                      {plan.features.map((feature, featureIndex) => (
+                        <li key={featureIndex} className="flex items-start">
+                          <Check className="h-5 w-5 text-teal-500 mt-0.5 mr-3 flex-shrink-0" />
+                          <span className="text-gray-700">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* CTA Button */}
+                    <Button
+                      onClick={() => navigate('/profile-setup')}
+                      className={`w-full py-3 rounded-lg font-medium transition-all duration-300 ${
+                        plan.recommended
+                          ? 'bg-gradient-to-r from-teal-500 to-mint-500 hover:from-teal-600 hover:to-mint-600 text-white shadow-lg hover:shadow-xl'
+                          : 'bg-white border-2 border-gray-200 text-gray-900 hover:border-teal-500 hover:text-teal-600'
+                      }`}
+                    >
+                      {plan.price === "Free" ? "Get Started" : "Choose Plan"}
+                    </Button>
+                  </GlassCard>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Footer */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-center mt-16"
+          >
+            <p className="text-gray-600 mb-4">
+              All plans include a 14-day free trial. Cancel anytime.
+            </p>
+            <div className="flex justify-center space-x-8 text-sm text-gray-500">
+              <span>✓ HIPAA Compliant</span>
+              <span>✓ 256-bit Encryption</span>
+              <span>✓ 24/7 Security Monitoring</span>
             </div>
           </motion.div>
         </div>
-
-        <motion.div 
-          className="mt-12 flex justify-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-        >
-          <Button 
-            size="lg"
-            onClick={handleContinue}
-            disabled={loading}
-            className="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 px-12 py-4 text-lg"
-          >
-            {loading ? (
-              <div className="flex items-center">
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                Loading...
-              </div>
-            ) : (
-              `Start with ${selectedPlan === 'free' ? 'Free' : 'Premium'} Plan`
-            )}
-          </Button>
-        </motion.div>
-
-        <motion.p 
-          className="text-center text-gray-600 mt-6 text-sm"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-        >
-          You can upgrade or downgrade anytime. No long-term commitments.
-        </motion.p>
-      </motion.div>
+      </div>
     </div>
   );
 };
