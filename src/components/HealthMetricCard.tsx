@@ -23,13 +23,16 @@ const HealthMetricCard = ({ title, metricType, unit }: HealthMetricCardProps) =>
   const { data: metricData, refetch } = useQuery({
     queryKey: ["healthMetric", metricType],
     queryFn: async () => {
+      if (!user?.id) return null;
+      
       const { data, error } = await supabase
         .from("health_metrics")
         .select("value, recorded_at")
         .eq("metric_type", metricType)
+        .eq("user_id", user.id)
         .order("recorded_at", { ascending: false })
         .limit(1)
-        .maybeSingle(); // Changed from single() to maybeSingle()
+        .maybeSingle();
 
       if (error) {
         console.error("Error fetching metric:", error);
@@ -37,6 +40,7 @@ const HealthMetricCard = ({ title, metricType, unit }: HealthMetricCardProps) =>
       }
       return data;
     },
+    enabled: !!user?.id,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -55,10 +59,11 @@ const HealthMetricCard = ({ title, metricType, unit }: HealthMetricCardProps) =>
       metric_type: metricType,
       value: Number(newValue),
       unit,
-      user_id: user.id, // Added user_id field
+      user_id: user.id,
     });
 
     if (error) {
+      console.error("Error saving metric:", error);
       toast({
         title: "Error",
         description: "Failed to save metric",

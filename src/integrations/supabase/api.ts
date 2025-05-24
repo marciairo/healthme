@@ -1,5 +1,5 @@
+
 import { supabase } from './client';
-import { Database } from './types';
 import { format } from 'date-fns';
 
 // Define types for form data based on what the forms will provide
@@ -18,7 +18,7 @@ export type WorkoutData = {
 export type MealData = {
   description: string;
   calories: number;
-  mealType: Database['public']['Enums']['meal_type'];
+  mealType: 'breakfast' | 'lunch' | 'dinner' | 'snack';
   recordedAtDate: Date;
   recordedAtTime: string;
 };
@@ -26,7 +26,7 @@ export type MealData = {
 // Symptom Data
 export type SymptomData = {
   symptomName: string;
-  severity: Database['public']['Enums']['symptom_severity'];
+  severity: 'mild' | 'moderate' | 'severe';
   notes?: string;
   recordedAtDate: Date;
   recordedAtTime: string;

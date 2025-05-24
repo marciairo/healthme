@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -30,16 +31,11 @@ import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
-import { Database } from '@/integrations/supabase/types'; // For enum type
 import { addSymptom, SymptomData } from '@/integrations/supabase/api';
 import { useAuthStore } from '@/store/authStore';
 import { useToast } from '@/hooks/use-toast';
 
-const symptomSeverities: Database['public']['Enums']['symptom_severity'][] = [
-  'mild',
-  'moderate',
-  'severe',
-];
+const symptomSeverities = ['mild', 'moderate', 'severe'] as const;
 
 const symptomFormSchema = z.object({
   symptomName: z.string().min(1, { message: 'Symptom name is required.' }),
@@ -63,7 +59,6 @@ const AddSymptomForm: React.FC<AddSymptomFormProps> = ({ onSuccess }) => {
     resolver: zodResolver(symptomFormSchema),
     defaultValues: {
       symptomName: '',
-      // severity: 'mild', // Let user select
       notes: '',
       recordedAtDate: new Date(),
       recordedAtTime: format(new Date(), 'HH:mm'),
@@ -76,7 +71,7 @@ const AddSymptomForm: React.FC<AddSymptomFormProps> = ({ onSuccess }) => {
       return;
     }
     try {
-      await addSymptom(user.id, data as unknown as SymptomData); // Cast if Zod type differs
+      await addSymptom(user.id, data as unknown as SymptomData);
       toast({ title: t('success.recordAdded'), description: t('forms.symptom.successMessage') });
       onSuccess();
     } catch (error) {
