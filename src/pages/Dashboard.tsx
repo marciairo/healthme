@@ -7,24 +7,24 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import HealthMetricCard from "@/components/HealthMetricCard";
 import { Card } from "@/components/ui/card";
-import { useState } from "react";
+import { useState } from "react"; // Keep useState
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+// Remove useToast if only used for the old handleAddRecord
+// import { useToast } from "@/hooks/use-toast"; 
+import { AddRecordModal } from "../components/forms/AddRecordModal"; // Added import
 
 const Dashboard = () => {
   const { t } = useTranslation();
   const user = useAuthStore((state) => state.user);
-  const [activeTab, setActiveTab] = useState("daily");
+  // const [activeTab, setActiveTab] = useState("daily"); // This state seems unused in the provided snippet, but keeping if used elsewhere.
   const navigate = useNavigate();
-  const { toast } = useToast();
+  // const { toast } = useToast(); // Remove if only used for old handleAddRecord
+
+  const [isAddRecordModalOpen, setIsAddRecordModalOpen] = useState(false); // Added state for modal
 
   const handleAddRecord = () => {
-    toast({
-      title: "Coming Soon",
-      description: "The ability to add new records will be available soon!",
-      duration: 3000,
-    });
+    setIsAddRecordModalOpen(true); // Changed to open modal
   };
 
   // Fetch latest symptoms
@@ -177,6 +177,11 @@ const Dashboard = () => {
       >
         <Plus className="h-6 w-6" />
       </Button>
+
+      <AddRecordModal 
+        isOpen={isAddRecordModalOpen} 
+        onClose={() => setIsAddRecordModalOpen(false)} 
+      />
     </motion.div>
   );
 };

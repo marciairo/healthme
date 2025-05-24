@@ -21,17 +21,17 @@ const Onboarding = () => {
     {
       title: t('onboarding.step1.title'),
       description: t('onboarding.step1.description'),
-      lottieUrl: "https://assets8.lottiefiles.com/packages/lf20_5t7j6ip3.json"
+      lottieUrl: "/animations/tracking.json"
     },
     {
       title: t('onboarding.step2.title'),
       description: t('onboarding.step2.description'),
-      lottieUrl: "https://assets8.lottiefiles.com/packages/lf20_5t7j6ip3.json"
+      lottieUrl: "/animations/eating.json"
     },
     {
       title: t('onboarding.step3.title'),
       description: t('onboarding.step3.description'),
-      lottieUrl: "https://assets8.lottiefiles.com/packages/lf20_5t7j6ip3.json"
+      lottieUrl: "/animations/goals.json"
     }
   ];
 
@@ -48,9 +48,9 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div data-testid="onboarding-container" className="min-h-screen flex flex-col bg-[url('/images/onboarding_background.jpg')] bg-cover bg-center">
       <motion.div 
-        className="flex-1 flex flex-col items-center justify-center p-6"
+        className="flex-1 flex flex-col items-center justify-center p-6 bg-black bg-opacity-50" // Added a semi-transparent overlay for better text readability
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}

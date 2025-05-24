@@ -4,7 +4,9 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
+// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  /// <reference types="vitest" />
   server: {
     host: "::",
     port: 8080,
@@ -18,5 +20,10 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/test-setup.ts'],
   },
 }));
