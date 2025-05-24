@@ -1,9 +1,9 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import AddWorkoutForm from './AddWorkoutForm';
 import { vi } from 'vitest';
-import { addWorkout } from '@/integrations/supabase/api'; // To spy on the mock
-import { mockToast } from '@/test-setup'; // To check toast calls
+import AddWorkoutForm from './AddWorkoutForm';
+import { addWorkout } from '@/integrations/supabase/api';
+import { mockToast } from '@/test-setup';
 
 // Mock i18next translations just for these tests if not fully covered by global setup
 // For simplicity, assuming global setup's t function is sufficient.
