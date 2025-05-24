@@ -441,6 +441,79 @@ export type Database = {
         }
         Relationships: []
       }
+      sleep_logs: { // Added sleep_logs
+        Row: {
+          id: string
+          user_id: string
+          date: string // DATE type
+          duration_hours: number // NUMERIC(4,2)
+          quality_rating: number // INTEGER
+          notes: string | null
+          created_at: string // TIMESTAMPTZ
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          date: string
+          duration_hours: number
+          quality_rating: number
+          notes?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          date?: string
+          duration_hours?: number
+          quality_rating?: number
+          notes?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sleep_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      mood_logs: { // Added mood_logs
+        Row: {
+          id: string
+          user_id: string
+          mood_rating: number // INTEGER
+          notes: string | null
+          recorded_at: string // TIMESTAMPTZ
+          created_at: string // TIMESTAMPTZ
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          mood_rating: number
+          notes?: string | null
+          recorded_at?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          mood_rating?: number
+          notes?: string | null
+          recorded_at?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mood_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
