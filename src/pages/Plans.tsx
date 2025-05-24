@@ -6,8 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
-import { createSubscription } from "@/utils/subscriptionUtils";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const Plans = () => {
   const { t } = useTranslation();
@@ -29,7 +28,8 @@ const Plans = () => {
 
     setLoading(true);
     try {
-      await createSubscription(user.id, selectedPlan);
+      // For now, just proceed to profile setup without creating subscription
+      // TODO: Implement subscription logic when needed
       navigate('/profile-setup');
     } catch (error: any) {
       toast({
