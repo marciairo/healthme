@@ -1,12 +1,13 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
 
-interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface GlassCardProps extends Omit<HTMLMotionProps<'div'>, 'children'> {
   variant?: 'light' | 'medium' | 'strong';
   hover?: boolean;
   glow?: boolean;
+  children?: React.ReactNode;
 }
 
 export const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
