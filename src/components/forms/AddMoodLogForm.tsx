@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,6 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
@@ -33,7 +35,7 @@ import { addMoodLog, MoodLogData } from '@/integrations/supabase/api';
 import { useAuthStore } from '@/store/authStore';
 import { useToast } from '@/hooks/use-toast';
 
-const moodRatingLevels = ['1', '2', '3', '4', '5'] as const; // 1: Very Poor, 5: Very Good
+const moodRatingLevels = ['1', '2', '3', '4', '5'] as const;
 
 const moodLogFormSchema = z.object({
   moodRating: z.enum(moodRatingLevels, { required_error: 'Mood rating is required.' }),
@@ -55,7 +57,6 @@ const AddMoodLogForm: React.FC<AddMoodLogFormProps> = ({ onSuccess }) => {
   const form = useForm<MoodLogFormValues>({
     resolver: zodResolver(moodLogFormSchema),
     defaultValues: {
-      // moodRating: '3', // Let user select
       notes: '',
       recordedAtDate: new Date(),
       recordedAtTime: format(new Date(), 'HH:mm'),
@@ -68,9 +69,7 @@ const AddMoodLogForm: React.FC<AddMoodLogFormProps> = ({ onSuccess }) => {
       return;
     }
     try {
-      // The API function addMoodLog expects data.moodRating to be a string '1'-'5'
-      // and will parseInt it.
-      await addMoodLog(user.id, data as unknown as MoodLogData); // Cast if Zod type differs
+      await addMoodLog(user.id, data as unknown as MoodLogData);
       toast({ title: t('success.recordAdded'), description: t('forms.mood.successMessage') });
       onSuccess();
     } catch (error) {
@@ -97,8 +96,7 @@ const AddMoodLogForm: React.FC<AddMoodLogFormProps> = ({ onSuccess }) => {
                 <SelectContent>
                   {moodRatingLevels.map((level) => (
                     <SelectItem key={level} value={level}>
-                      {t(`enums.moodRating.${level}`)} 
-                      {/* Example: enums.moodRating.1 = Very Poor, ... 5 = Very Good */}
+                      {t(`enums.moodRating.${level}`)}
                     </SelectItem>
                   ))}
                 </SelectContent>

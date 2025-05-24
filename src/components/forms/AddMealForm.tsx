@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -30,18 +31,13 @@ import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
-import { Database } from '@/integrations/supabase/types'; // For enum type
 import { addMeal, MealData } from '@/integrations/supabase/api';
 import { useAuthStore } from '@/store/authStore';
 import { useToast } from '@/hooks/use-toast';
 
-// Define the meal types based on Supabase enum
-const mealTypes: Database['public']['Enums']['meal_type'][] = [
-  'breakfast',
-  'lunch',
-  'dinner',
-  'snack',
-];
+// Define the meal types with const assertion for proper TypeScript handling
+const mealTypes = ['breakfast', 'lunch', 'dinner', 'snack'] as const;
+type MealType = typeof mealTypes[number];
 
 const mealFormSchema = z.object({
   description: z.string().min(1, { message: 'Description is required.' }),
@@ -66,7 +62,6 @@ const AddMealForm: React.FC<AddMealFormProps> = ({ onSuccess }) => {
     defaultValues: {
       description: '',
       calories: 0,
-      // mealType: 'lunch', // Let user select
       recordedAtDate: new Date(),
       recordedAtTime: format(new Date(), 'HH:mm'),
     },
@@ -78,7 +73,7 @@ const AddMealForm: React.FC<AddMealFormProps> = ({ onSuccess }) => {
       return;
     }
     try {
-      await addMeal(user.id, data as unknown as MealData); // Cast if Zod type differs slightly
+      await addMeal(user.id, data as unknown as MealData);
       toast({ title: t('success.recordAdded'), description: t('forms.meal.successMessage') });
       onSuccess();
     } catch (error) {
