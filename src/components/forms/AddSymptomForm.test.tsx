@@ -1,7 +1,5 @@
-
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
 import AddSymptomForm from './AddSymptomForm';
 import { addSymptom } from '@/integrations/supabase/api';
 import { mockToast } from '@/test-setup';

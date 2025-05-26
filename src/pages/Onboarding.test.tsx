@@ -31,25 +31,9 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-// Mock LottiePlayer component if it's a direct import,
-// otherwise we'll look for its rendered output (e.g., an <object> tag or a div with a specific role)
-// For this example, let's assume 'lottie-react' renders a div with role="figure" for the animation
-// and uses an <object> tag internally that we might not be able to easily query without a data-testid.
-// If a specific Lottie component like <Lottie /> from 'lottie-react' is used,
-// it would be better to mock that component directly.
-// vi.mock('lottie-react', () => ({
-//   default: ({ src }: { src: string }) => <div role="figure" data-lottie-src={src} />,
-// }));
-// For now, we will assume the Lottie animation is rendered in a way that we can find its container
-// and inspect a prop or child that indicates the source.
-// The actual implementation uses <Lottie options={...} /> which might render an <svg> or <canvas>
-// We will look for the title of the step to confirm change, and assume Lottie component loads correctly.
-
 describe('Onboarding Page', () => {
   beforeEach(() => {
-    // Reset mocks before each test
     mockNavigate.mockClear();
-    // Ensure currentStep is reset if Onboarding component has internal state not reset by unmounting
   });
 
   const renderOnboarding = () => {

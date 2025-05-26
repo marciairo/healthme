@@ -14,7 +14,7 @@ describe('AddWorkoutForm', () => {
   beforeEach(() => {
     mockOnSuccess.mockClear();
     mockToast.mockClear();
-    (addWorkout as vi.Mock).mockClear(); // Clear mock history for addWorkout
+    (addWorkout as vi.Mock).mockClear();
   });
 
   const renderForm = () => {

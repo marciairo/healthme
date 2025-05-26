@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { AddRecordModal } from './AddRecordModal'; // Use named import
+import { AddRecordModal } from './AddRecordModal';
 import { vi } from 'vitest';
 
 // Mock the actual form components to simplify modal testing
@@ -11,7 +11,6 @@ vi.mock('./AddMealForm', () => ({ default: ({ onSuccess }: { onSuccess: () => vo
 vi.mock('./AddSymptomForm', () => ({ default: ({ onSuccess }: { onSuccess: () => void }) => <div data-testid="symptom-form">Symptom Form <button onClick={onSuccess}>SubmitSymptom</button></div> }));
 vi.mock('./AddSleepLogForm', () => ({ default: ({ onSuccess }: { onSuccess: () => void }) => <div data-testid="sleep-log-form">Sleep Log Form <button onClick={onSuccess}>SubmitSleep</button></div> }));
 vi.mock('./AddMoodLogForm', () => ({ default: ({ onSuccess }: { onSuccess: () => void }) => <div data-testid="mood-log-form">Mood Log Form <button onClick={onSuccess}>SubmitMood</button></div> }));
-
 
 describe('AddRecordModal', () => {
   const mockOnClose = vi.fn();
@@ -95,6 +94,10 @@ describe('AddRecordModal', () => {
   // shadcn/ui Dialog typically has an 'X' button. Let's assume it has an aria-label or role.
   // If it's just an icon, it might be harder to target without adding a specific test id.
   // For now, we'll simulate the onOpenChange behavior which is what the 'X' button triggers.
+  // For shadcn Dialog, the 'X' button is usually a <button> with a <XIcon>.
+  // If we assume DialogPrimitive.Close is used, it might be targetable.
+  // For now, this test is limited without a clear selector for the default close button.
+  // A more robust way would be to add data-testid to the close button if possible.
   test('onClose is called when Dialog onOpenChange is called with false', () => {
     const { rerender } = render(<AddRecordModal isOpen={true} onClose={mockOnClose} />);
     // Simulate the internal Dialog calling onOpenChange(false)
