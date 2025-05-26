@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/vitest';
 import { vi } from 'vitest';
 
 // Make vi globally available
-globalThis.vi = vi;
+(globalThis as any).vi = vi;
 
 // Mock Supabase client
 vi.mock('@/integrations/supabase/client', () => ({
